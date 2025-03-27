@@ -14,6 +14,6 @@ The dataset used in this challenge is the Multi-Acquisitions Cardiac Ultrasound 
 
 The segmented regions in the ventricle are divided into the following areas:
 
-Left ventricular outer wall (myocardium)
-Inner region of the ventricle (endocardium)
-Left atrium (atrium left)
+- 1) Left ventricular outer wall (myocardium)
+- 2) Inner region of the ventricle (endocardium)
+- 3) Left atrium (atrium left)
