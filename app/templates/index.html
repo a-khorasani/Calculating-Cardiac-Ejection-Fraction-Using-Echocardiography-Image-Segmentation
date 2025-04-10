@@ -1,0 +1,57 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Calculate EF</title>
+</head>
+<body>
+    <h2>Upload your file</h2>
+    <form action="/uploadfile/" enctype="multipart/form-data" method="post">
+        <input name="files" type="file" accept=".gz" multiple required>
+        <input type="submit" value="send">
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EF calculator</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="upload-card">
+            <div class="card-header">
+                <i class="fas fa-heartbeat"></i>
+                <h1>EF calculator system</h1>
+                <p>Please upload your pictures files</p>
+            </div>
+            
+            <form action="/uploadfile/" enctype="multipart/form-data" method="post" class="upload-form">
+                <div class="file-input-wrapper">
+                    <label for="file-upload" class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Select or drag & drop files here</span>
+                        <input id="file-upload" name="files" type="file" accept=".nii.gz" multiple required>
+                    </label>
+                    <div class="file-requirements">
+                        <p>allowed format: .nii.gz</p>
+                        <p>Required quantity is 4 files : (ED 2CH, ES 2CH, ED 4CH, ES 4CH)</p>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-calculator"></i>
+                    Calculate EF
+                </button>
+            </form>
+        </div>
+    </div>
+    
+
+    <script src="../static/script.js"></script>
+</body>
+</html>
