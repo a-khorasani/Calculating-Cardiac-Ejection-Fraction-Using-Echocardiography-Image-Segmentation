@@ -5,8 +5,8 @@
 </head>
 <body>
     <h2>Upload your file</h2>
-    <form action="/uploadfolder/" enctype="multipart/form-data" method="post">
-        <input name="files" type="file" multiple webkitdirectory directory>
+    <form action="/uploadfile/" enctype="multipart/form-data" method="post">
+        <input name="files" type="file" accept=".gz" multiple required>
         <input type="submit" value="send">
     </form>
 </body>

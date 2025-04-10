@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Request
+from fastapi import FastAPI, File, UploadFile, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import List
@@ -9,6 +9,7 @@ import torchvision.transforms as T
 import numpy as np
 import nibabel as nib
 import segmentation_models_pytorch as smp
+import tempfile
 
 app = FastAPI()
 
@@ -16,20 +17,16 @@ templates = Jinja2Templates(directory="app/templates")
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-# model = torch.load('C:/Users/Amir/Desktop/IPRIA-hackathon-AmirHossein-Mahjoub-Khorasani/unet.pt', 
-#                    map_location=device)
-# model.eval()
+model = torch.load('C:/Users/Amir/Desktop/IPRIA-hackathon-AmirHossein-Mahjoub-Khorasani/unet.pt', 
+                   map_location=device, 
+                   weights_only=False)
+model.eval()
 
 transform = T.Compose([
     T.ToPILImage(),
     T.Resize((224, 224)),
     T.ToTensor(),
 ])
-
-model = smp.Unet(encoder_name='efficientnet-b1', encoder_weights='imagenet', 
-                in_channels=1, classes=4).to(device)
-model.load_state_dict(torch.load("C:/Users/Amir/Desktop/IPRIA-hackathon-AmirHossein-Mahjoub-Khorasani/unet.pt"))
-model.eval()
 
 def calculate_EF(ed_vol_2CH, es_vol_2CH, ed_vol_4CH, es_vol_4CH):
     
@@ -69,10 +66,21 @@ def main(request: Request):
 
 @app.post("/uploadfile/")
 async def upload_file(files: List[UploadFile] = File(...)):
-    volume = []
+    volumes = []
     for file in files:
-        volume.append(calculate_volume(file.filename))
+        if not file.filename.endswith('.nii.gz'):
+            raise HTTPException(status_code=400, detail='only ".nii.gz" files are allowed')
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".nii.gz") as temp_file:
+            temp_path = temp_file.name
+            print(temp_path)
+            shutil.copyfileobj(file.file, temp_file)
+        try:
+            volume = calculate_volume(temp_path)
+            volumes.append(volume)
+        finally:
+            os.unlink(temp_path) 
+    if len(volumes) != 4:
+        raise HTTPException(status_code=400, detail="Please upload just 4 files: (ED 2CH, ES 2CH, ED 4CH, ES 4CH)")
         
-    ef = calculate_EF(volume[0], volume[1], volume[2], volume[3])
-    
+    ef = calculate_EF(volumes[0], volumes[1], volumes[2], volumes[3])
     return {'message': f'ef = {ef:.2f}%'}
