@@ -75,8 +75,8 @@ def calculate_volume(img_path):
 def main(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.post("/uploadfile/")
-async def upload_file(files: List[UploadFile] = File(...)):
+@app.post("/uploadfile/", response_class=HTMLResponse)
+async def upload_file(request: Request, files: List[UploadFile] = File(...)):
     volumes = []
     for file in files:
         if not file.filename.endswith('.nii.gz'):
@@ -94,4 +94,18 @@ async def upload_file(files: List[UploadFile] = File(...)):
         raise HTTPException(status_code=400, detail="Please upload just 4 files: (ED 2CH, ES 2CH, ED 4CH, ES 4CH)")
         
     ef = calculate_EF(volumes[0], volumes[1], volumes[2], volumes[3])
-    return {'message': f'ef = {ef:.2f}%'}
+    
+    if ef < 40:
+        ef_status = "Reduced"
+    elif 40 <= ef <= 55:
+        ef_status = "Natural"
+    else:
+        ef_status = "High"
+    ef_percentage = (ef / 100) * 180
+    
+    return templates.TemplateResponse("result.html", {
+        "request": request,
+        "ef_value": f"{ef:.1f}",
+        "ef_status": ef_status,
+        "ef_percentage": ef_percentage
+    })
