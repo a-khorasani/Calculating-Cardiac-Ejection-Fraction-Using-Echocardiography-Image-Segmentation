@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result for calculate EF</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="result-card">
+            <div class="card-header">
+                <i class="fas fa-heartbeat"></i>
+                <h1>Result of your Ejection Fraction</h1>
+                <p>Review your imaging results</p>
+            </div>
+            
+            <div class="result-content">
+                <div class="ef-gauge-container">
+                    <div class="gauge">
+                        <div class="gauge-body">
+                            <div class="gauge-fill" style="transform: rotate({{ ef_percentage }}deg);"></div>
+                            <div class="gauge-cover">{{ ef_value }}%</div>
+                        </div>
+                        <div class="gauge-labels">
+                            <span>Weak</span>
+                            <span>Natural</span>
+                            <span>Excellent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-details">
+                    <div class="detail-box">
+                        <i class="fas fa-heart"></i>
+                        <h3>EF value</h3>
+                        <p>{{ ef_value }}%</p>
+                    </div>
+                    
+                    <div class="detail-box">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Heart situation</h3>
+                        <p>{{ ef_status }}</p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="/" class="btn">
+                        <i class="fas fa-arrow-right"></i>
+                        Return to homepage
+                    </a>
+                    <button class="btn print-btn">
+                        <i class="fas fa-print"></i>
+                        Print result
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/script.js"></script>
+    <script>
+        document.querySelector('.print-btn').addEventListener('click', () => {
+            window.print();
+        });
+    </script>
+</body>
+</html>
