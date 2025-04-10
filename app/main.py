@@ -1,6 +1,8 @@
 from fastapi import FastAPI, File, UploadFile, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import shutil
 import os
@@ -12,6 +14,15 @@ import segmentation_models_pytorch as smp
 import tempfile
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
