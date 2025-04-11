@@ -41,6 +41,11 @@ The optimization algorithm used to solve this problem is the Adam optimizer. The
 
 To calculate EF, the two-chamber and four-chamber heart images must first be provided to the model at both ED and ES times, producing the segmented images. Then, the number of pixels in the left ventricle’s inner region is calculated at ED and ES times, and according to Simpson’s single plane method, the volume of the inner region of the ventricle is computed, leading to the calculation of the patient’s EF.
 
+## API and Web Interface
+To facilitate the use of this model, a simple RESTful API has been developed using FastAPI. This API allows users to upload echocardiographic images and receive segmentation results along with EF calculation. It serves as a lightweight and accessible way to interact with the model without needing deep technical knowledge.
+
+Additionally, a basic web interface is provided using HTML, CSS, and JavaScript, enabling users to interact with the system visually and upload images directly through their browser. This front-end is designed to be user-friendly and helps demonstrate the practical application of the model in a real-world setting.
+
 ## Thank You for Exploring This Project!
 I appreciate your interest in my project on heart image segmentation and ejection fraction measurement.
 
